@@ -20,7 +20,7 @@ object ChatEventHandler : Listener {
         ) {
             val message = "${p.name} has joined the server"
             Bukkit.getScheduler().runTaskAsynchronously(SlackBridge.plugin as Plugin,
-                Runnable { SlackBridge.slackInterface.sendToSlack(message) })
+                Runnable { SlackBridge.slackInterface.sendToSlackSynchronous(message) })
         }
     }
 
@@ -34,7 +34,7 @@ object ChatEventHandler : Listener {
         ) {
             val message = "${p.name} has left the server"
             Bukkit.getScheduler().runTaskAsynchronously(SlackBridge.plugin as Plugin,
-                Runnable { SlackBridge.slackInterface.sendToSlack(message) })
+                Runnable { SlackBridge.slackInterface.sendToSlackSynchronous(message) })
         }
     }
 
@@ -45,7 +45,7 @@ object ChatEventHandler : Listener {
         if (SlackBridge.perms?.has(p, "slackbridge.chat") == true && SlackBridge.slackConnected) {
             val message = "<${p.name}> ${event.message}"
             Bukkit.getScheduler().runTaskAsynchronously(SlackBridge.plugin as Plugin,
-                Runnable { SlackBridge.slackInterface.sendToSlack(message) })
+                Runnable { SlackBridge.slackInterface.sendToSlackSynchronous(message) })
         }
     }
 }

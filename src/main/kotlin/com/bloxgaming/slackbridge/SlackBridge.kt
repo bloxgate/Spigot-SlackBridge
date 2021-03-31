@@ -56,7 +56,7 @@ class SlackBridge : JavaPlugin() {
         slackInterface = SlackInterface(channel, token)
         server.pluginManager.registerEvents(ChatEventHandler, this)
 
-        val connected = slackInterface.sendToSlack("Server connected to slack!")
+        val connected = slackInterface.sendToSlackSynchronous("Server connected to slack!")
         if(!connected) {
             logger.severe("Unable to connect to slack - disabling")
             server.pluginManager.disablePlugin(this)
@@ -70,7 +70,7 @@ class SlackBridge : JavaPlugin() {
     override fun onDisable() {
         if(slackConnected)
         {
-            slackInterface.sendToSlack("Server disconnected from slack")
+            slackInterface.sendToSlackSynchronous("Server disconnected from slack")
         }
         logger.info("SlackBridge has shutdown!")
     }

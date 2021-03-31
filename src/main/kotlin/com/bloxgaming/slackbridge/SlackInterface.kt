@@ -13,7 +13,7 @@ class SlackInterface(private val channel: String, private val token: String) {
         private val json: Gson = GsonBuilder().create()
     }
 
-    fun sendToSlack(message: String): Boolean {
+    fun sendToSlackSynchronous(message: String): Boolean {
         val postContent = mapOf("channel" to channel, "text" to message)
 
         val client = HttpClient.newHttpClient()
