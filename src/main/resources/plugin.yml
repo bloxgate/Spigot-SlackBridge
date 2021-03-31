@@ -3,6 +3,16 @@ version: ${project.version}
 main: com.bloxgaming.slackbridge.SlackBridge
 api-version: 1.16
 prefix: SlackBridge
-depend: [ vault ]
+depend: [ Vault ]
 authors: [ bloxgate ]
 description: Bridge server chat into a slack channel
+permissions:
+  slackbridge.chat:
+    description: Allows chat messages from this user to be sent to slack
+    default: not op
+  slackbridge.chat.join:
+    description: Send a message on join if enabled in config
+    default: not op
+  slackbridge.chat.leave:
+    description: Send a message on disconnect if enabled in config
+    default: not op

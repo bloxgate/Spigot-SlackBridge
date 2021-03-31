@@ -1,2 +1,3 @@
 channel_id: "yourChannelID"
 bot_token: "xoxb-your-token"
+send_join_and_leave: true

@@ -13,6 +13,7 @@ class SlackBridge : JavaPlugin() {
         var slackConnected: Boolean = false
         lateinit var channel: String
         lateinit var token: String
+        var connectMessages: Boolean = true
         lateinit var slackInterface: SlackInterface
     }
 
@@ -44,11 +45,13 @@ class SlackBridge : JavaPlugin() {
         val config = this.config
         config.addDefault("channel_id", "yourChannelID")
         config.addDefault("bot_token", "xoxb-your-token")
-        config.options().copyDefaults()
+        config.addDefault("send_join_and_leave", true)
+        config.options().copyDefaults(true)
         this.saveDefaultConfig()
 
         channel = config.getString("channel_id", "yourChannelID")!!
         token = config.getString("bot_token", "xoxb-your-token")!!
+        connectMessages = config.getBoolean("send_join_and_leave")
 
         slackInterface = SlackInterface(channel, token)
         server.pluginManager.registerEvents(ChatEventHandler, this)

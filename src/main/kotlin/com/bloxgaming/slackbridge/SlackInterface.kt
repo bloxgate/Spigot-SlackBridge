@@ -14,7 +14,7 @@ class SlackInterface(private val channel: String, private val token: String) {
     }
 
     fun sendToSlack(message: String): Boolean {
-        val postContent = mapOf("channel" to channel, "message" to message)
+        val postContent = mapOf("channel" to channel, "text" to message)
 
         val client = HttpClient.newHttpClient()
         val post = HttpRequest.newBuilder(URI.create("https://slack.com/api/chat.postMessage"))
