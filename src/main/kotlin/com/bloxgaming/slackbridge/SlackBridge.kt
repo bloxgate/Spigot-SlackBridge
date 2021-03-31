@@ -13,8 +13,13 @@ class SlackBridge : JavaPlugin() {
         var slackConnected: Boolean = false
         lateinit var channel: String
         lateinit var token: String
+        lateinit var signingSecret: String
         var connectMessages: Boolean = true
+        lateinit var bindAddress: String
+        var bindPort: Int = 8888
         lateinit var slackInterface: SlackInterface
+
+        var ourSlackID: String = ""
     }
 
     private fun setupPermissions(): Boolean {
@@ -37,6 +42,7 @@ class SlackBridge : JavaPlugin() {
         if(!setupPermissions()) {
             logger.severe("Vault not found - disabling")
             server.pluginManager.disablePlugin(this)
+            return
         }
         setupChat()
 
@@ -45,21 +51,35 @@ class SlackBridge : JavaPlugin() {
         val config = this.config
         config.addDefault("channel_id", "yourChannelID")
         config.addDefault("bot_token", "xoxb-your-token")
+        config.addDefault("signing_secret", "yourSigningSecret")
         config.addDefault("send_join_and_leave", true)
+        config.addDefault("bind_address", "0.0.0.0")
+        config.addDefault("bind_port", 8888)
         config.options().copyDefaults(true)
         this.saveDefaultConfig()
 
         channel = config.getString("channel_id", "yourChannelID")!!
         token = config.getString("bot_token", "xoxb-your-token")!!
+        signingSecret = config.getString("signing_secret", "yourSigningSecret")!!
         connectMessages = config.getBoolean("send_join_and_leave")
+        bindAddress = config.getString("bind_address", "0.0.0.0")!!
+        bindPort = config.getInt("bind_port", 8888)
 
         slackInterface = SlackInterface(channel, token)
         server.pluginManager.registerEvents(ChatEventHandler, this)
 
+        ourSlackID = slackInterface.getOurSlackID()
+        if (ourSlackID == "null") {
+            logger.severe("Disabling due to missing Slack ID")
+            server.pluginManager.disablePlugin(this)
+            return
+        }
+        slackInterface.startSlackToMCServer()
         val connected = slackInterface.sendToSlackSynchronous("Server connected to slack!")
-        if(!connected) {
+        if (!connected) {
             logger.severe("Unable to connect to slack - disabling")
             server.pluginManager.disablePlugin(this)
+            return
         } else {
             slackConnected = true
         }
@@ -68,10 +88,11 @@ class SlackBridge : JavaPlugin() {
     }
 
     override fun onDisable() {
-        if(slackConnected)
-        {
+        if (slackConnected) {
             slackInterface.sendToSlackSynchronous("Server disconnected from slack")
         }
+        logger.info("Stopping internal webserver...")
+        slackInterface.stopSlackToMCServer()
         logger.info("SlackBridge has shutdown!")
     }
 }
