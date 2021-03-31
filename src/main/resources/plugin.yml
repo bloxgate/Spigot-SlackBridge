@@ -1,0 +1,8 @@
+name: SlackBridge
+version: ${project.version}
+main: com.bloxgaming.slackbridge.SlackBridge
+api-version: 1.16
+prefix: SlackBridge
+depend: [ vault ]
+authors: [ bloxgate ]
+description: Bridge server chat into a slack channel
