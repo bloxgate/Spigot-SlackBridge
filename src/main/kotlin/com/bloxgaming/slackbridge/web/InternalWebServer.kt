@@ -52,14 +52,14 @@ class InternalWebServer(port: Int, hostname: String?) {
                 }
                 val body = exchange.requestBody.readAllBytes().toString(Charsets.UTF_8)
 
-                val sig_base = "v0:$timestamp:$body"
+                val sigBase = "v0:$timestamp:$body"
                 val hmac = Mac.getInstance("HmacSHA256")
                 val signingKey = SecretKeySpec(SlackBridge.signingSecret.toByteArray(Charsets.UTF_8), "HmacSHA256")
                 hmac.init(signingKey)
 
                 //https://stackoverflow.com/a/52225984
                 val signature = "v0=${
-                    hmac.doFinal(sig_base.toByteArray(Charsets.UTF_8)).asUByteArray().joinToString("") {
+                    hmac.doFinal(sigBase.toByteArray(Charsets.UTF_8)).asUByteArray().joinToString("") {
                         it.toString(16).padStart(2, '0')
                     }
                 }"
@@ -93,7 +93,9 @@ class InternalWebServer(port: Int, hostname: String?) {
                         val sender = event["user"].toString()
                         val message = event["text"].toString()
 
-                        if (sender == SlackBridge.ourSlackID) {
+                        //Check if we sent the message
+                        //Also works around the slack bug described at https://api.slack.com/events/message/message_replied
+                        if (sender == SlackBridge.ourSlackID || event["thread_ts"].toString() != "null") {
                             return
                         }
 
