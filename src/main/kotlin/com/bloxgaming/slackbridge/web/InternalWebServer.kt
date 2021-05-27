@@ -79,8 +79,8 @@ class InternalWebServer(port: Int, hostname: String?) {
                     val response = mapOf("challenge" to content["challenge"].toString())
                     val responseJson = SlackInterface.json.toJson(response).toByteArray()
 
-                    exchange.sendResponseHeaders(200, responseJson.size.toLong())
                     exchange.responseHeaders["Content-Type"] = "application/json; charset=utf-8"
+                    exchange.sendResponseHeaders(200, responseJson.size.toLong())
                     exchange.responseBody.write(responseJson)
                     exchange.close()
                 } else if (content["type"].toString() == "event_callback") {
