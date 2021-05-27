@@ -6,6 +6,8 @@ prefix: SlackBridge
 depend: [ Vault ]
 authors: [ bloxgate ]
 description: Bridge server chat into a slack channel
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10
 permissions:
   slackbridge.chat:
     description: Allows chat messages from this user to be sent to slack
