@@ -2,6 +2,7 @@ channel_id: "yourChannelID"
 bot_token: "xoxb-your-token"
 signing_secret: "your-signing-scret"
 send_join_and_leave: true
+send_death_messages: true
 
 bind_address: "0.0.0.0"
 bind_port: 8888

@@ -1,13 +1,14 @@
 name: SlackBridge
 version: ${project.version}
 main: com.bloxgaming.slackbridge.SlackBridge
-api-version: 1.16
+api-version: 1.17
 prefix: SlackBridge
 depend: [ Vault ]
 authors: [ bloxgate ]
 description: Bridge server chat into a slack channel
 libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10
+  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21
+  - org.jetbrains:annotations:13.0
 permissions:
   slackbridge.chat:
     description: Allows chat messages from this user to be sent to slack
@@ -17,4 +18,7 @@ permissions:
     default: true
   slackbridge.chat.leave:
     description: Send a message on disconnect if enabled in config
+    default: true
+  slackbridge.chat.death:
+    description: Send a message when player dies
     default: true

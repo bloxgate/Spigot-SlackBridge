@@ -15,6 +15,7 @@ class SlackBridge : JavaPlugin() {
         lateinit var token: String
         lateinit var signingSecret: String
         var connectMessages: Boolean = true
+        var deathMessages: Boolean = true
         lateinit var bindAddress: String
         var bindPort: Int = 8888
         lateinit var slackInterface: SlackInterface
@@ -53,6 +54,7 @@ class SlackBridge : JavaPlugin() {
         config.addDefault("bot_token", "xoxb-your-token")
         config.addDefault("signing_secret", "yourSigningSecret")
         config.addDefault("send_join_and_leave", true)
+        config.addDefault("send_death_messages", true)
         config.addDefault("bind_address", "0.0.0.0")
         config.addDefault("bind_port", 8888)
         config.options().copyDefaults(true)
@@ -62,11 +64,13 @@ class SlackBridge : JavaPlugin() {
         token = config.getString("bot_token", "xoxb-your-token")!!
         signingSecret = config.getString("signing_secret", "yourSigningSecret")!!
         connectMessages = config.getBoolean("send_join_and_leave")
+        deathMessages = config.getBoolean("send_death_messages")
         bindAddress = config.getString("bind_address", "0.0.0.0")!!
         bindPort = config.getInt("bind_port", 8888)
 
         slackInterface = SlackInterface(channel, token)
         server.pluginManager.registerEvents(ChatEventHandler, this)
+        server.pluginManager.registerEvents(PlayerEventHandler, this)
 
         ourSlackID = slackInterface.getOurSlackID()
         if (ourSlackID == "null") {
