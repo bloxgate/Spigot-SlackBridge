@@ -22,3 +22,6 @@ permissions:
   slackbridge.chat.death:
     description: Send a message when player dies
     default: true
+  slackbridge.chat.advancement:
+    description: Send a message when a player earns an advancement
+    default: true
