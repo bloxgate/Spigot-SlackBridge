@@ -20,7 +20,7 @@ object ChatEventHandler : Listener {
                 "slackbridge.chat.join"
             ) == true
         ) {
-            val message = "${p.name} has joined the server"
+            val message = "<${ChatColor.stripColor(p.displayName)}> has joined the server"
             Bukkit.getScheduler().runTaskAsynchronously(SlackBridge.plugin as Plugin,
                 Runnable { SlackBridge.slackInterface.sendToSlackSynchronous(message) })
         }
@@ -34,7 +34,7 @@ object ChatEventHandler : Listener {
                 "slackbridge.chat.leave"
             ) == true
         ) {
-            val message = "${p.name} has left the server"
+            val message = "<${ChatColor.stripColor(p.displayName)}> has left the server"
             Bukkit.getScheduler().runTaskAsynchronously(SlackBridge.plugin as Plugin,
                 Runnable { SlackBridge.slackInterface.sendToSlackSynchronous(message) })
         }

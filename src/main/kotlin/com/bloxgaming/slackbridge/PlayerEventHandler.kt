@@ -15,7 +15,8 @@ object PlayerEventHandler : Listener {
     fun onPlayerDeath(event: PlayerDeathEvent) {
         if (SlackBridge.deathMessages && SlackBridge.perms!!.has(event.entity, "slackbridge.chat.death")) {
             Bukkit.getScheduler().runTaskAsynchronously(SlackBridge.plugin as Plugin, Runnable {
-                val message = event.deathMessage ?: "${event.entity.name} died mysteriously."
+                val message =
+                    event.deathMessage ?: "<${ChatColor.stripColor(event.entity.displayName)}> died mysteriously."
                 SlackBridge.slackInterface.sendToSlackSynchronous(message)
             })
         }
