@@ -28,12 +28,12 @@ object PlayerEventHandler : Listener {
         }
         if (SlackBridge.advancementMessages && SlackBridge.perms!!.has(event.player, "slackbridge.chat.advancement")) {
             Bukkit.getScheduler().runTaskAsynchronously(SlackBridge.plugin as Plugin, Runnable {
-                val message = "${ChatColor.stripColor(event.player.displayName)} has earned the advancement [${
+                val message = "<${ChatColor.stripColor(event.player.displayName)}> has earned the advancement [${
                     SlackBridge.advancementTitles.getOrDefault(
                         event.advancement.key.key,
-                        "Unrecognized Advancement (${event.advancement.key.key})]"
+                        "Unrecognized Advancement (${event.advancement.key.key})"
                     )
-                }"
+                }]"
                 SlackBridge.slackInterface.sendToSlackSynchronous(message)
             })
         }
