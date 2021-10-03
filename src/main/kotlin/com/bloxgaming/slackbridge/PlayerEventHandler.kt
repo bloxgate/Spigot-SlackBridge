@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin
 
 object PlayerEventHandler : Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val p = event.player
         if (SlackBridge.slackConnected && SlackBridge.connectMessages && SlackBridge.perms?.has(
@@ -27,7 +27,7 @@ object PlayerEventHandler : Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlayerQuit(event: PlayerQuitEvent) {
         val p = event.player
         if (SlackBridge.slackConnected && SlackBridge.connectMessages && SlackBridge.perms?.has(
