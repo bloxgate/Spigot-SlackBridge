@@ -13,6 +13,7 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import kotlin.math.abs
 
+@kotlin.ExperimentalUnsignedTypes
 class InternalWebServer(port: Int, hostname: String?) {
 
     val server: HttpServer
@@ -37,8 +38,8 @@ class InternalWebServer(port: Int, hostname: String?) {
         server.stop(0)
     }
 
+    @kotlin.ExperimentalUnsignedTypes
     private object SlackEventHandler : HttpHandler {
-        @ExperimentalUnsignedTypes
         override fun handle(exchange: HttpExchange) {
             if (exchange.requestMethod.equals("post", true)) {
                 val timestamp = exchange.requestHeaders.getFirst("X-Slack-Request-Timestamp") ?: "0"
